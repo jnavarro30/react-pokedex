@@ -1,7 +1,25 @@
-.red {
-    color: red;
+.App {
+    height: 100vh;
+    background-image: url('./assets/images/thimo-pedersen-TWCnHKKhqSo-unsplash.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    &:hover {
-        cursor: pointer;
-    }
+.pokedex {
+    height: 90%;
+    width: 90%;
+    background-image: url('./assets/images/pokedex.png');
+    background-size: 100% 100%;
+    border: 5px solid black;
+    border-radius: 4%;
+}
+
+.pokedex-screen {
+    transform: translate(10%, 80%);
+    height: 35%;
+    width: 82%;
+    display: grid;
+    border: 2px solid green;
 }

@@ -1,9 +1,10 @@
 import './App.scss';
+import Pokedex from './components/Pokedex';
 
 function App() {
   return (
     <div className="App">
-      <h1 className="red">Hello</h1>
+      <Pokedex />
     </div>
   );
 }
