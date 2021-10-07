@@ -8,6 +8,7 @@
 }
 
 .pokedex {
+    position: relative;
     height: 90%;
     width: 90%;
     background-image: url('./assets/images/pokedex.png');
@@ -20,6 +21,33 @@
     transform: translate(10%, 80%);
     height: 35%;
     width: 82%;
-    display: grid;
-    border: 2px solid green;
+    background-color: rgba(37, 169, 245,0.2);
+
+    img {
+        height: 100%;
+        width: 100%;
+    }
 }
+
+.music-screen {
+    transform: translate(10%, 80%);
+    height: 35%;
+    width: 82%;
+    background-color: rgba(37, 169, 245,0.2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+
+.selected {
+    color: red;
+    font-weight: bolder;
+    text-shadow: 2px 2px 10px yellow;
+}
+
+.dark-mode {
+    background-color: black;
+    color: #ffffff;
+}
+
+@import './partials/controls';

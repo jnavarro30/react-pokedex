@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-function PokedexScreen() {
+function PokedexScreen({ pokemonId, pokemonInfo, darkMode, setDarkMode }) {
+
     return (
-        <div className='pokedex-screen'>
-            
+        <div className={`pokedex-screen ${darkMode ? 'dark-mode' : ''}`} onClick={() => setDarkMode(!darkMode)}>
+            <img src={pokemonInfo.sprite} alt='pokemon' />
         </div>
     )
 }
