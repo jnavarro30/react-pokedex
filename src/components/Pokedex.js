@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PokedexScreen from './PokedexScreen';
 import MusicScreen from './MusicScreen';
+import tracks from '../assets/audio/tracks'
 
 function Pokedex() {
     const [pokemonParam, setPokemonParam] = useState(1)
@@ -9,30 +10,33 @@ function Pokedex() {
     const [pokemonInfo, setPokemonInfo] = useState({})
     const [darkMode, setDarkMode] = useState(false)
     const [pokedexScreen, setPokedexScreen] = useState(true)
-    const [currentTrack, setCurrentTrack] = useState(0)
+    const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
     const [userInput, setUserInput] = useState('')
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [currentTrack, setCurrentTrack] = useState('')
 
     // pokemon api
     useEffect(() => {
-        const getPokemon = async() => {
-            try {
-                const url = `https://pokeapi.co/api/v2/pokemon/${pokemonParam}`
-                const body = await axios.get(url)
-                const pokemon = body.data
-                const { id, name, height: ht, weight: wt } = pokemon
-                const type = pokemon.types[0].type.name
-                const sprite = classicMode ? pokemon.sprites.front_default 
-                    : pokemon.sprites.other.dream_world.front_default
-            
-                setPokemonInfo({
-                    id, name, type, ht, wt, sprite
-                })
-            } catch(err) {
-                console.log(err)
-                return
+        if (pokedexScreen) {
+            const getPokemon = async() => {
+                try {
+                    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonParam}`
+                    const body = await axios.get(url)
+                    const pokemon = body.data
+                    const { id, name } = pokemon
+                    const sprite = classicMode ? pokemon.sprites.front_default 
+                        : pokemon.sprites.other.dream_world.front_default
+                
+                    setPokemonInfo({
+                        id, name, sprite
+                    })
+                } catch(err) {
+                    return
+                }
             }
+            getPokemon()
         }
-        getPokemon()
+        
     }, [pokemonParam, classicMode, pokedexScreen])
 
     // buttons
@@ -40,9 +44,13 @@ function Pokedex() {
         setPokemonParam(1)
         setClassicMode(false)
         setDarkMode(false)
-        setCurrentTrack(0)
+        setCurrentTrackIndex(0)
         setPokedexScreen(true)
         setUserInput('')
+        setCurrentTrackIndex(0)
+        currentTrack.pause()
+        setCurrentTrack('')
+        setIsPlaying(false)
     }
 
     const arrowBtns = arrow => {
@@ -56,17 +64,17 @@ function Pokedex() {
                     : id - 1 
             }) 
         } else {
-            if (arrow === 'up' && currentTrack <= 1) return
-            if (arrow === 'bottom' && currentTrack >= 8) return
-            if (arrow === 'left' && currentTrack <= 0) return
-            if (arrow === 'right' && currentTrack >= 9) return
+            if (arrow === 'up' && currentTrackIndex <= 1) return
+            if (arrow === 'bottom' && currentTrackIndex >= 8) return
+            if (arrow === 'left' && currentTrackIndex <= 0) return
+            if (arrow === 'right' && currentTrackIndex >= 9) return
 
             if (arrow === 'up' || arrow === 'bottom') {
-                setCurrentTrack((prevTrack) => {
+                setCurrentTrackIndex((prevTrack) => {
                     return arrow === 'up' ? prevTrack - 2 : prevTrack + 2   
                 }) 
             } else {
-                setCurrentTrack((prevTrack) => {
+                setCurrentTrackIndex((prevTrack) => {
                     return arrow === 'left' && prevTrack % 2? prevTrack - 1 : 
                         arrow === 'right' && prevTrack % 2 === 0 ? prevTrack + 1 : prevTrack
                 }) 
@@ -85,6 +93,29 @@ function Pokedex() {
         setUserInput('')
     }
 
+    // music
+    const speakerBtn = () => {
+        const url = Object.values(tracks[currentTrackIndex])[0]
+        if (isPlaying && currentTrack.src === url) {
+            currentTrack.pause()
+            setIsPlaying(false)
+        } else if (!isPlaying && currentTrack.src === url) {
+            currentTrack.play()
+            setIsPlaying(true)
+        } else {
+            if (currentTrack) {
+                currentTrack.src = url
+                currentTrack.play()
+                setIsPlaying(true)
+            } else {
+                const song = new Audio(url)
+                setCurrentTrack(song)
+                song.play()
+                setIsPlaying(true)
+            }
+        }  
+    }
+
     return (
         <div className='pokedex'>
             {
@@ -96,7 +127,7 @@ function Pokedex() {
                     setDarkMode={setDarkMode}
                 /> :
                 <MusicScreen 
-                    currentTrack={currentTrack}
+                    currentTrackIndex={currentTrackIndex}
                     setDarkMode={setDarkMode}
                     darkMode={darkMode}
                 />
@@ -109,11 +140,10 @@ function Pokedex() {
             <div className='blue-btn btn' onClick={blueBtn}></div>
             <div className='green-btn btn' onClick={() => setClassicMode(!classicMode)}></div>
             <div className='orange-btn btn' onClick={() => setPokedexScreen(!pokedexScreen)}></div>
-            <div className='speaker-btn btn'></div>
+            <div className='speaker-btn btn' onClick={speakerBtn}></div>
             <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange}/>
         </div>
     )
 }
-// name id next input
-// play music
+
 export default Pokedex
