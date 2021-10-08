@@ -4,48 +4,56 @@ import PokedexScreen from './PokedexScreen';
 import MusicScreen from './MusicScreen';
 
 function Pokedex() {
-    const [pokemonId, setPokemonId] = useState(1)
+    const [pokemonParam, setPokemonParam] = useState(1)
     const [classicMode, setClassicMode] = useState(false)
     const [pokemonInfo, setPokemonInfo] = useState({})
     const [darkMode, setDarkMode] = useState(false)
     const [pokedexScreen, setPokedexScreen] = useState(true)
     const [currentTrack, setCurrentTrack] = useState(0)
+    const [userInput, setUserInput] = useState('')
 
     // pokemon api
     useEffect(() => {
         const getPokemon = async() => {
-            const url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
-            const body = await axios.get(url)
-            const pokemon = body.data
-            const { id, name, height: ht, weight: wt } = pokemon
-            const type = pokemon.types[0].type.name
-            const sprite = classicMode ? pokemon.sprites.front_default 
-                : pokemon.sprites.other.dream_world.front_default
+            try {
+                const url = `https://pokeapi.co/api/v2/pokemon/${pokemonParam}`
+                const body = await axios.get(url)
+                const pokemon = body.data
+                const { id, name, height: ht, weight: wt } = pokemon
+                const type = pokemon.types[0].type.name
+                const sprite = classicMode ? pokemon.sprites.front_default 
+                    : pokemon.sprites.other.dream_world.front_default
             
-            setPokemonInfo({
-                id, name, type, ht, wt, sprite
-            })
+                setPokemonInfo({
+                    id, name, type, ht, wt, sprite
+                })
+            } catch(err) {
+                console.log(err)
+                return
+            }
         }
         getPokemon()
-    }, [pokemonId, classicMode, pokedexScreen])
+    }, [pokemonParam, classicMode, pokedexScreen])
 
     // buttons
     const redBtn = () => {
-        setPokemonId(1)
+        setPokemonParam(1)
         setClassicMode(false)
         setDarkMode(false)
         setCurrentTrack(0)
         setPokedexScreen(true)
+        setUserInput('')
     }
 
     const arrowBtns = arrow => {
+        const { id } = pokemonInfo
         if (pokedexScreen) {
-            if (arrow === 'bottom' && pokemonId === 1) return
-            if (arrow === 'left' && pokemonId === 1) return
+            if (arrow === 'bottom' && id === 1) return
+            if (arrow === 'left' && id === 1) return
 
-            setPokemonId((prevId) => {
-                return arrow === 'up' || arrow === 'right' ? prevId + 1
-                    : prevId - 1 
+            setPokemonParam(() => {
+                return arrow === 'up' || arrow === 'right' ? id + 1
+                    : id - 1 
             }) 
         } else {
             if (arrow === 'up' && currentTrack <= 1) return
@@ -66,12 +74,23 @@ function Pokedex() {
         } 
     }
 
+    const handleOnChange = e => {
+        const input = e.target.value
+        setUserInput(input)
+    }
+
+    const blueBtn = () => {
+        if (!userInput) return
+        setPokemonParam(userInput)
+        setUserInput('')
+    }
+
     return (
         <div className='pokedex'>
             {
                 pokedexScreen ? 
                 <PokedexScreen 
-                    pokemonId={pokemonId}
+                    pokemonParam={pokemonParam}
                     pokemonInfo={pokemonInfo}
                     darkMode={darkMode}
                     setDarkMode={setDarkMode}
@@ -87,12 +106,14 @@ function Pokedex() {
             <div className='bottom-btn btn' onClick={() => arrowBtns('bottom')}></div>
             <div className='left-btn btn' onClick={() => arrowBtns('left')}></div>
             <div className='red-btn btn' onClick={() => redBtn()}></div>
-            <div className='blue-btn btn'></div>
+            <div className='blue-btn btn' onClick={blueBtn}></div>
             <div className='green-btn btn' onClick={() => setClassicMode(!classicMode)}></div>
             <div className='orange-btn btn' onClick={() => setPokedexScreen(!pokedexScreen)}></div>
             <div className='speaker-btn btn'></div>
+            <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange}/>
         </div>
     )
 }
-
+// name id next input
+// play music
 export default Pokedex
