@@ -82,6 +82,7 @@ function Pokedex() {
         }
     }
 
+
     const handleOnChange = e => {
         const input = e.target.value
         setUserInput(input)
@@ -89,6 +90,25 @@ function Pokedex() {
 
     const handleOnKeyPress = e => {
         if (e.which === 13) blueBtn()
+    }
+
+    const handleOnKeyDown = e => {
+        switch (e.which) {
+            case 37:
+                arrowBtns('left')
+                break
+            case 40:
+                arrowBtns('bottom')
+                break
+            case 38:
+                arrowBtns('up')
+                break
+            case 39:
+                arrowBtns('right')
+                break
+            default:
+                return
+        }
     }
 
     const blueBtn = () => {
@@ -121,7 +141,7 @@ function Pokedex() {
     }
 
     return (
-        <div className='pokedex'>
+        <div className='pokedex' tabIndex="1" onKeyDown={handleOnKeyDown}>
             {
                 pokedexScreen ?
                     <PokedexScreen
