@@ -48,7 +48,7 @@ function Pokedex() {
         setPokedexScreen(true)
         setUserInput('')
         setCurrentTrackIndex(0)
-        currentTrack.pause()
+        if (currentTrack) currentTrack.pause()
         setCurrentTrack('')
         setIsPlaying(false)
     }
