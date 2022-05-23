@@ -89,7 +89,12 @@ function Pokedex() {
     }
 
     const handleOnKeyPress = e => {
-        if (e.which === 13) blueBtn()
+        if (e.which === 13) {
+            blueBtn()
+            console.log(e.target)
+            document.getElementsByClassName("pokedex")[0].focus()
+        }
+
     }
 
     const handleOnKeyDown = e => {
@@ -109,6 +114,7 @@ function Pokedex() {
             default:
                 return
         }
+       document.getElementsByClassName("pokedex")[0].focus()
     }
 
     const blueBtn = () => {
@@ -165,7 +171,7 @@ function Pokedex() {
             <div className='green-btn btn' onClick={() => setClassicMode(!classicMode)}></div>
             <div className='orange-btn btn' onClick={() => setPokedexScreen(!pokedexScreen)}></div>
             <div className='speaker-btn btn' onClick={speakerBtn}></div>
-            <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange} onKeyPress={handleOnKeyPress} />
+            <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange} onKeyPress={handleOnKeyPress} autoComplete="off"/>
         </div>
     )
 }

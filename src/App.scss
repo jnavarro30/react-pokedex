@@ -1,70 +1,77 @@
 .App {
-    height: 100vh;
-    background-image: url('./assets/images/thimo-pedersen-TWCnHKKhqSo-unsplash.jpg');
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Pokemon Solid', sans-serif; 
-    text-transform: uppercase;
-    letter-spacing: 0.2rem;
+  height: 100vh;
+  background-image: url("./assets/images/thimo-pedersen-TWCnHKKhqSo-unsplash.jpg");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Pokemon Solid", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
 }
 
 .pokedex {
-    position: relative;
-    height: 90%;
-    width: 90%;
-    max-width: 600px;
-    background-image: url('./assets/images/pokedex.png');
-    background-size: 100% 100%;
-    border: 5px solid black;
-    border-radius: 4%;
+  position: relative;
+  height: 90%;
+  width: 90%;
+  max-width: 600px;
+  background-image: url("./assets/images/pokedex.png");
+  background-size: 100% 100%;
+  border: 5px solid black;
+  border-radius: 4%;
 }
 
 .pokedex-screen {
-    transform: translate(10%, 80%);
-    height: 35%;
-    width: 82%;
-    background-color: rgba(37, 169, 245, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
+  transform: translate(10%, 80%);
+  height: 35%;
+  width: 82%;
+  background-color: rgba(37, 169, 245, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 
-    img {
-        height: 90%;
-        width: 90%;
-    }
+  img {
+    height: 90%;
+    width: 90%;
+  }
 
-    div {
-        font-weight: bolder;
-        text-transform: capitalize;
-    }
+  div {
+    font-weight: bolder;
+    text-transform: capitalize;
+  }
 }
 
 .music-screen {
-    transform: translate(10%, 83%);
-    height: 35%;
-    width: 82%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
+  transform: translate(14%, 81%);
+  height: 35%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
 }
 
 .selected {
-    color: red;
-    font-weight: bolder;
-    text-shadow: 2px 2px 10px yellow;
+  color: red;
+  font-weight: bolder;
+  text-shadow: 2px 2px 10px yellow;
 }
 
 .dark-mode {
-    background-color: black;
-    color: #ffffff;
+  background-color: black;
+  color: #ffffff;
 }
 
 ::placeholder {
-    font-family: 'Pokemon Solid', sans-serif;                                              
+  font-family: "Pokemon Solid", sans-serif;
 }
 
-@import './partials/controls';
+@import "./partials/controls";
+
+@media (max-width: 450px) {
+  .music-screen {
+    transform: translate(14%, 83%);
+    font-size: 0.8rem;
+  }
+}
