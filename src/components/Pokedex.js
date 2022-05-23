@@ -18,25 +18,25 @@ function Pokedex() {
     // pokemon api
     useEffect(() => {
         if (pokedexScreen) {
-            const getPokemon = async() => {
+            const getPokemon = async () => {
                 try {
                     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonParam}`
                     const body = await axios.get(url)
                     const pokemon = body.data
                     const { id, name } = pokemon
-                    const sprite = classicMode ? pokemon.sprites.front_default 
+                    const sprite = classicMode ? pokemon.sprites.front_default
                         : pokemon.sprites.other.dream_world.front_default
-                
+
                     setPokemonInfo({
                         id, name, sprite
                     })
-                } catch(err) {
+                } catch (err) {
                     return
                 }
             }
             getPokemon()
         }
-        
+
     }, [pokemonParam, classicMode, pokedexScreen])
 
     // buttons
@@ -61,8 +61,8 @@ function Pokedex() {
 
             setPokemonParam(() => {
                 return arrow === 'up' || arrow === 'right' ? id + 1
-                    : id - 1 
-            }) 
+                    : id - 1
+            })
         } else {
             if (arrow === 'up' && currentTrackIndex <= 1) return
             if (arrow === 'bottom' && currentTrackIndex >= 8) return
@@ -71,20 +71,24 @@ function Pokedex() {
 
             if (arrow === 'up' || arrow === 'bottom') {
                 setCurrentTrackIndex((prevTrack) => {
-                    return arrow === 'up' ? prevTrack - 2 : prevTrack + 2   
-                }) 
+                    return arrow === 'up' ? prevTrack - 2 : prevTrack + 2
+                })
             } else {
                 setCurrentTrackIndex((prevTrack) => {
-                    return arrow === 'left' && prevTrack % 2? prevTrack - 1 : 
+                    return arrow === 'left' && prevTrack % 2 ? prevTrack - 1 :
                         arrow === 'right' && prevTrack % 2 === 0 ? prevTrack + 1 : prevTrack
-                }) 
-            } 
-        } 
+                })
+            }
+        }
     }
 
     const handleOnChange = e => {
         const input = e.target.value
         setUserInput(input)
+    }
+
+    const handleOnKeyPress = e => {
+        if (e.which === 13) blueBtn()
     }
 
     const blueBtn = () => {
@@ -113,24 +117,24 @@ function Pokedex() {
                 song.play()
                 setIsPlaying(true)
             }
-        }  
+        }
     }
 
     return (
         <div className='pokedex'>
             {
-                pokedexScreen ? 
-                <PokedexScreen 
-                    pokemonParam={pokemonParam}
-                    pokemonInfo={pokemonInfo}
-                    darkMode={darkMode}
-                    setDarkMode={setDarkMode}
-                /> :
-                <MusicScreen 
-                    currentTrackIndex={currentTrackIndex}
-                    setDarkMode={setDarkMode}
-                    darkMode={darkMode}
-                />
+                pokedexScreen ?
+                    <PokedexScreen
+                        pokemonParam={pokemonParam}
+                        pokemonInfo={pokemonInfo}
+                        darkMode={darkMode}
+                        setDarkMode={setDarkMode}
+                    /> :
+                    <MusicScreen
+                        currentTrackIndex={currentTrackIndex}
+                        setDarkMode={setDarkMode}
+                        darkMode={darkMode}
+                    />
             }
             <div className='up-btn btn' onClick={() => arrowBtns('up')}></div>
             <div className='right-btn btn' onClick={() => arrowBtns('right')}></div>
@@ -141,7 +145,7 @@ function Pokedex() {
             <div className='green-btn btn' onClick={() => setClassicMode(!classicMode)}></div>
             <div className='orange-btn btn' onClick={() => setPokedexScreen(!pokedexScreen)}></div>
             <div className='speaker-btn btn' onClick={speakerBtn}></div>
-            <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange}/>
+            <input className='input-btn btn' type='text' name='input' value={userInput} placeholder='Name/ID' onChange={handleOnChange} onKeyPress={handleOnKeyPress} />
         </div>
     )
 }
