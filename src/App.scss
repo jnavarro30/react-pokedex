@@ -78,3 +78,10 @@
     font-size: 0.8rem;
   }
 }
+
+@media (max-width: 380px) {
+  .music-screen {
+    transform: translate(10%, 79%);
+    font-size: 0.8rem;
+  }
+}
